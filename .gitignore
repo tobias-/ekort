@@ -1,0 +1,10 @@
+/target/
+/*/target/
+.idea/
+*.iml
+.project
+.classpath
+
+.DS_Store
+*.swp
+*.xml.versionsBackup
