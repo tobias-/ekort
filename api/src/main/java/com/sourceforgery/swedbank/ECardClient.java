@@ -403,7 +403,7 @@ public class ECardClient {
             req1.put("TransLimit", transactionLimit);
             req1.put("CumulativeLimit", cumulativeLimit);
             req1.put("ValidFor", validForMonths);
-            return CPN.Companion.from(executeWebServlet(req1));
+            return new CPN(executeWebServlet(req1));
         }
 
         public List<ActiveECard> getActiveECards(RealCard realCard, int start) throws IOException {

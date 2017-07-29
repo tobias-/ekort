@@ -7,7 +7,7 @@ import java.time.format.SignStyle
 import java.time.temporal.ChronoField.*
 import java.util.*
 
-open class UrlEncodedData internal constructor(internal val index: Int, private val data: Map<String, String>) {
+open class UrlEncodedData internal constructor(private val index: Int, private val data: Map<String, String>) {
 
     internal fun getInt(fieldName: String): Int {
         return getString(fieldName).toInt()
@@ -36,7 +36,7 @@ open class UrlEncodedData internal constructor(internal val index: Int, private 
     }
 
     fun getBigDecimal(fieldName: String): BigDecimal {
-        val str = getString(fieldName) ?: ""
+        val str = getString(fieldName)
         val matcher = FIND_AMOUNT.find(str) ?: throw IllegalArgumentException("There's no amount in " + str)
         val number = matcher.groupValues[1].replace(".", "").replace(',', '.')
         return BigDecimal(number)

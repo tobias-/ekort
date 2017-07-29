@@ -1,7 +1,5 @@
 package com.sourceforgery.swedbank
 
-import java.util.ArrayList
-
 class RealCard private constructor(result: Map<String, String>, index: Int) : UrlEncodedData(index, result) {
     val adFrequency: Int
     val cardType: Int

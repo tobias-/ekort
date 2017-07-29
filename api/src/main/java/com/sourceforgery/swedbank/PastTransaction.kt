@@ -1,53 +1,26 @@
 package com.sourceforgery.swedbank
 
-import java.util.ArrayList
-
-class PastTransaction private constructor(index: Int, result: Map<String, String>) : UrlEncodedData(index, result) {
-    val authCode: String
-    val merchantCity: String
-    val merchantCountry: String
-    val merchantName: String
-    val microRefNumber: String
-    val status: String
-    val transactionDate: String
-    val avv: String
-    val cpnType: String
-    val currency: Int
-    val expiryDate: String
-    val issueDate: String
-    val numUsage: String
-    val pan: String
-    val validFrom: String
-    val validTo: String
-    val originalAmount: String
-    val transactionAmount: String
-    val transactionLimit: String
-    val cumulativeLimit: String
-
-
-    init {
-        this.authCode = getString("AuthCode")
-        this.merchantCity = getString("MerchantCity")
-        this.merchantCountry = getString("MerchantCountry")
-        this.merchantName = getString("MerchantName")
-        this.microRefNumber = getString("MicroRefNumber")
-        this.status = getString("Status")
-        this.transactionDate = getString("TransactionDate")
-        this.avv = getString("AVV")
-        this.cpnType = getString("CPNType")
-        this.currency = getInt("Currency")
-        this.expiryDate = getString("ExpiryDate")
-        this.issueDate = getString("IssueDate")
-        this.numUsage = getString("NumUsage")
-        this.pan = getString("PAN")
-        this.validFrom = getString("ValidFrom")
-        this.validTo = getString("ValidTo")
-        this.originalAmount = getString("OriginalAmount")
-        this.transactionAmount = getString("TransactionAmount")
-        this.transactionLimit = getString("UTransactionLimit")
-        this.cumulativeLimit = getString("UCumulativeLimit")
-
-    }
+data class PastTransaction constructor(val index: Int, val result: Map<String, String>) : UrlEncodedData(index, result) {
+    val authCode= getString("AuthCode")
+    val merchantCity= getString("MerchantCity")
+    val merchantCountry= getString("MerchantCountry")
+    val merchantName= getString("MerchantName")
+    val microRefNumber= getString("MicroRefNumber")
+    val status= getString("Status")
+    val transactionDate= getString("TransactionDate")
+    val avv= getString("AVV")
+    val cpnType= getString("CPNType")
+    val currency= getInt("Currency")
+    val expiryDate= getString("ExpiryDate")
+    val issueDate= getString("IssueDate")
+    val numUsage= getString("NumUsage")
+    val pan= getString("PAN")
+    val validFrom= getString("ValidFrom")
+    val validTo= getString("ValidTo")
+    val originalAmount= getString("OriginalAmount")
+    val transactionAmount= getString("TransactionAmount")
+    val transactionLimit= getString("UTransactionLimit")
+    val cumulativeLimit= getString("UCumulativeLimit")
 
     companion object {
 

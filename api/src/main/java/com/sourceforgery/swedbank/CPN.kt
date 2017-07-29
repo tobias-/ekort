@@ -1,24 +1,9 @@
 package com.sourceforgery.swedbank
 
-class CPN private constructor(data: Map<String, String>) {
-    private val avv: String
-    private val from: String
-    private val pan: String
-    private val expiryMonth: String
-    private val expiryYear: String
-
-    init {
-        avv = data["AVV"]
-        from = data["From"]
-        pan = data["PAN"]
-        expiryMonth = data["ExpiryMonth"]
-        expiryYear = data["ExpiryYear"]
-    }
-
-    companion object {
-
-        fun from(data: Map<String, String>): CPN {
-            return CPN(data)
-        }
-    }
+data class CPN constructor(val data: Map<String, String>) {
+    val avv = data["AVV"] ?: throw IllegalArgumentException("No AVV")
+    val from = data["From"] ?: throw IllegalArgumentException("No From")
+    val pan = data["PAN"] ?: throw IllegalArgumentException("No PAN")
+    val expiryMonth = data["ExpiryMonth"] ?: throw IllegalArgumentException("No ExpiryMonth")
+    val expiryYear = data["ExpiryYear"] ?: throw IllegalArgumentException("No ExpiryYear")
 }

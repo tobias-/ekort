@@ -1,8 +1,5 @@
 package com.sourceforgery.swedbank
 
-import java.util.LinkedHashSet
-import java.util.stream.Collectors
-
 import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
@@ -21,13 +18,13 @@ class CookieMonster : CookieJar {
     }
 
     override fun loadForRequest(url: HttpUrl): List<Cookie> {
-        return cookieJar.stream()
+        return cookieJar
                 .filter { e -> e.cookie.matches(url) }
-                .map<Cookie>(Function<CookieId, Cookie> { it.getCookie() })
-                .collect<List<Cookie>, Any>(Collectors.toList<Cookie>())
+                .map { it.cookie }
+                .toList()
     }
 
-    private class CookieId private constructor(internal val cookie: Cookie) {
+    private class CookieId constructor(internal val cookie: Cookie) {
 
         override fun equals(other: Any?): Boolean {
             if (other == null) {
