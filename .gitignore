@@ -1,10 +1,15 @@
-/target/
-/*/target/
+/.gradle
+/build/
+/*/build/
+/gradle/
+.gradletasknamecache
+gradle/wrapper/gradle-wrapper.properties
+/gradlew.bat
+
+
 .idea/
 *.iml
 .project
 .classpath
 
-.DS_Store
 *.swp
-*.xml.versionsBackup
