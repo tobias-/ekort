@@ -1,3 +1,26 @@
+plugins {
+  id 'org.ajoberstar.grgit' version '1.7.2'
+
+  // only one of the following
+  id 'org.ajoberstar.release-opinion' version '1.7.2'
+  id 'org.ajoberstar.release-base' version '1.7.2'
+
+}
+
+version = "1.0.0-${grgit.head().abbreviatedId}"
+tasks.release.dependsOn 'clean', 'build'
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+		mavenCentral()
+    }
+}
+
+
 task wrapper(type: Wrapper) {
     gradleVersion = '4.0.2'
 }
+
+
