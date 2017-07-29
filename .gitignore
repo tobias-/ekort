@@ -6,6 +6,8 @@
 .gradletasknamecache
 gradle/wrapper/gradle-wrapper.properties
 gradlew.bat
+/android/local.properties
+/local.properties
 
 
 .idea/
