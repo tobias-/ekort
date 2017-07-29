@@ -24,25 +24,30 @@ class ECardClient private constructor(private val loginPersonNumber: String) {
         // This decodes "html" looking like [foo]bar[/foo]
         private val SWEDBANK_HTML_DECODER = Regex("\\[([^]]+)]([^\\[]*)\\[/([^]]+)]")
         private val WINDOW_OPEN_FINDER = Regex("window\\.open\\('([^']+)", setOf(RegexOption.DOT_MATCHES_ALL, RegexOption.MULTILINE))
-        public var debugLevel = HttpLoggingInterceptor.Level.NONE
+        var debugLevel = HttpLoggingInterceptor.Level.NONE
 
         fun login(loginPersonNumber: String): List<Account> {
             val eCardClient = ECardClient(loginPersonNumber)
             return eCardClient.getAccounts(eCardClient.preClient(eCardClient.internalLogin()))
+        }
+
+        var logger: HttpLoggingInterceptor.Logger = object : HttpLoggingInterceptor.Logger {
+            override fun log(message: String?) {
+                System.err.println(message)
+            }
         }
     }
 
     private val okhttpClient: OkHttpClient
 
     private val clock = Clock.systemUTC()
-    private val loggingInterceptor: HttpLoggingInterceptor = HttpLoggingInterceptor(System.err::println)
+    private val loggingInterceptor: HttpLoggingInterceptor = HttpLoggingInterceptor({ ECardClient.logger.log(it) })
     private var msgNo = 0
     private var sessionId: String? = null
     private var webServletUrl: HttpUrl? = null
     private var realCards: List<RealCard> = emptyList()
 
     init {
-
         okhttpClient = OkHttpClient.Builder().cookieJar(CookieMonster())
                 .addNetworkInterceptor(loggingInterceptor)
                 .addNetworkInterceptor(

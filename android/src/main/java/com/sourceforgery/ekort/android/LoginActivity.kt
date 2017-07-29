@@ -7,17 +7,20 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.sourceforgery.swedbank.ECardClient
 import kotlinx.android.synthetic.main.activity_login.*
+import okhttp3.logging.HttpLoggingInterceptor
 
 
 /**
  * A login screen that offers login via email/password.
  */
 class LoginActivity : AppCompatActivity() {
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -133,6 +136,12 @@ class LoginActivity : AppCompatActivity() {
 
         override fun doInBackground(vararg params: Void): List<ECardClient.Account>? {
             try {
+                ECardClient.debugLevel = HttpLoggingInterceptor.Level.BODY
+                ECardClient.logger = object : HttpLoggingInterceptor.Logger {
+                    override fun log(message: String?) {
+                        Log.d("OkHttp3", message)
+                    }
+                }
                 return ECardClient.login(personNumber)
             } catch (e: InterruptedException) {
                 return null
