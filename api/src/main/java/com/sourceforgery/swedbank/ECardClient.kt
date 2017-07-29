@@ -158,7 +158,7 @@ class ECardClient private constructor(private val loginPersonNumber: String) {
     }
 
     private fun loginStep2(loginStep1Doc: Document): Document {
-        val authForm = loginStep1Doc.select("form[name=auth").first() as FormElement
+        val authForm = loginStep1Doc.select("form[name=auth]").first() as FormElement
         val elements = LinkedHashMap<String, String>()
         for (keyVal in authForm.formData()) {
             elements.put(keyVal.key(), keyVal.value())
