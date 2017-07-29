@@ -248,7 +248,7 @@ public class ECardClient {
         map.put("Request", "GetActiveCards");
         webServletUrl = thinOpenerUrl.newBuilder().encodedPath("/servlet/WebServlet").query(null).build();
         Map<String, String> result = executeWebServlet(map);
-        realCards = unmodifiableList(RealCard.from(result));
+        realCards = unmodifiableList(RealCard.Companion.from(result));
 
         //Map<String, String> result = executeWebServlet(Collections.singletonMap("Request", "GetCards"));
 
@@ -260,8 +260,8 @@ public class ECardClient {
     // This seems to be a select card, not only list profiles. YMMV?
     private void listProfile(final RealCard realCard) throws IOException {
         Map<String, Object> req1 = new LinkedHashMap<>();
-        req1.put("CardType", realCard.cardType);
-        req1.put("VCardId", realCard.vCardId);
+        req1.put("CardType", realCard.getCardType());
+        req1.put("VCardId", realCard.getVCardId());
 
         req1.put("Request", "ListProfileIds");
         req1.put("ProfileType", "");
@@ -385,41 +385,41 @@ public class ECardClient {
 
         public List<PastTransaction> getPastTransactions(RealCard realCard, int start) throws IOException {
             Map<String, Object> req2 = new LinkedHashMap<>();
-            req2.put("CardType", realCard.cardType);
-            req2.put("VCardId", realCard.vCardId);
+            req2.put("CardType", realCard.getCardType());
+            req2.put("VCardId", realCard.getVCardId());
 
             req2.put("Start", start);
             req2.put("Request", "GetPastTransactions");
             req2.put("Next", 100);
 
-            return PastTransaction.from(executeWebServlet(req2));
+            return PastTransaction.Companion.from(executeWebServlet(req2));
         }
 
         public CPN createCard(RealCard realCard, int transactionLimit, int cumulativeLimit, int validForMonths) throws IOException {
             Map<String, Object> req1 = new LinkedHashMap<>();
-            req1.put("CardType", realCard.cardType);
-            req1.put("VCardId", realCard.vCardId);
+            req1.put("CardType", realCard.getCardType());
+            req1.put("VCardId", realCard.getVCardId());
             req1.put("Request", "GetCPN");
             req1.put("TransLimit", transactionLimit);
             req1.put("CumulativeLimit", cumulativeLimit);
             req1.put("ValidFor", validForMonths);
-            return CPN.from(executeWebServlet(req1));
+            return CPN.Companion.from(executeWebServlet(req1));
         }
 
         public List<ActiveECard> getActiveECards(RealCard realCard, int start) throws IOException {
             Map<String, Object> req1 = new LinkedHashMap<>();
-            req1.put("CardType", realCard.cardType);
-            req1.put("VCardId", realCard.vCardId);
+            req1.put("CardType", realCard.getCardType());
+            req1.put("VCardId", realCard.getVCardId());
             req1.put("Request", "GetActiveAccounts");
             req1.put("Start", start);
             req1.put("Next", 100);
-            return ActiveECard.from(executeWebServlet(req1));
+            return ActiveECard.Companion.from(executeWebServlet(req1));
         }
 
         public void closeCard(RealCard realCard, String creditCardNumber) throws IOException {
             Map<String, Object> req1 = new LinkedHashMap<>();
-            req1.put("CardType", realCard.cardType);
-            req1.put("VCardId", realCard.vCardId);
+            req1.put("CardType", realCard.getCardType());
+            req1.put("VCardId", realCard.getVCardId());
             req1.put("Request", "CancelCPN");
             req1.put("CPNPAN", creditCardNumber);
             executeWebServlet(req1);
