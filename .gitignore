@@ -1,10 +1,11 @@
-/.gradle
+.gradle
 /build/
 /*/build/
 /gradle/
+/*/gradle/
 .gradletasknamecache
 gradle/wrapper/gradle-wrapper.properties
-/gradlew.bat
+gradlew.bat
 
 
 .idea/
