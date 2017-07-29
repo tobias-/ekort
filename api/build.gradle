@@ -2,13 +2,18 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "1.1.3-2"
 }
 
+apply plugin: 'java'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 sourceSets {
     main.kotlin.srcDirs += 'src/main/myKotlin'
     main.java.srcDirs += 'src/main/myJava'
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib"
+    compile 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.3-2'
     compile "org.jsoup:jsoup:1.10.3"
     compile "com.squareup.okhttp3:logging-interceptor:3.8.1"
     compile "com.squareup.okhttp3:okhttp:3.8.1"

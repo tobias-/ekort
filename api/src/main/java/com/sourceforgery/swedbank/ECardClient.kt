@@ -9,17 +9,13 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.FormElement
 import java.io.IOException
-import java.io.UncheckedIOException
-import java.io.UnsupportedEncodingException
-import java.net.URLDecoder
-import java.time.Clock
-import java.time.Duration
-import java.util.*
+import java.util.Arrays
+import java.util.Collections
 
 @SuppressWarnings("unused")
 class ECardClient private constructor(private val loginPersonNumber: String) {
     companion object {
-        private val POLL_TIMEOUT = Duration.ofSeconds(120)
+        private val POLL_TIMEOUT = 120 * 1000
         private val PATTERN = Regex("checkResponse.{0,50}dapPortalWindowId", setOf(RegexOption.DOT_MATCHES_ALL, RegexOption.MULTILINE))
         // This decodes "html" looking like [foo]bar[/foo]
         private val SWEDBANK_HTML_DECODER = Regex("\\[([^]]+)]([^\\[]*)\\[/([^]]+)]")
@@ -40,7 +36,6 @@ class ECardClient private constructor(private val loginPersonNumber: String) {
 
     private val okhttpClient: OkHttpClient
 
-    private val clock = Clock.systemUTC()
     private val loggingInterceptor: HttpLoggingInterceptor = HttpLoggingInterceptor({ ECardClient.logger.log(it) })
     private var msgNo = 0
     private var sessionId: String? = null
@@ -79,14 +74,14 @@ class ECardClient private constructor(private val loginPersonNumber: String) {
     }
 
     private fun internalLogin(): Document {
-        return Optional.of(Document("http://internet.swedbank.se"))
-                .map({this.initEkort()})
+        return Arrays.asList(Document("http://internet.swedbank.se"))
+                .map({ this.initEkort() })
                 .map(this::portalInit)
                 .map(this::loginStep1)
                 .map(this::loginStep2)
                 .map(this::poll)
                 .map(this::loginStep3)
-                .get()
+                .first()
     }
 
 
@@ -95,42 +90,36 @@ class ECardClient private constructor(private val loginPersonNumber: String) {
     }
 
     private fun poll(loginStep2Doc: Document): Document {
-        try {
-            if (PATTERN.find(loginStep2Doc.html()) != null) {
-                throw IOException("Document did not contain expected string. Error is " + getError(loginStep2Doc))
-            }
-
-            val req = Request.Builder().url("https://internetbank.swedbank.se/idp/portal/identifieringidp/busresponsecheck/main-dapPortalWindowId")
-                    .get()
-                    .build()
-            val started = clock.instant()
-            do {
-                val doc = jsoup(req)
-                val swedbankHtml = doc.select("div").text()
-                val data = LinkedHashMap<String, String>()
-                for (matcher in SWEDBANK_HTML_DECODER.findAll(swedbankHtml)) {
-                    if (matcher.groupValues[1] != matcher.groupValues[3]) {
-                        throw IOException("Weird swedbankHtml: " + swedbankHtml)
-                    }
-                    data.put(matcher.groupValues[1], matcher.groupValues[2])
-                }
-                val status = Integer.parseInt(data["responsechecker.status"])
-                if (status == 1) {
-                    // Logged in. Done
-                    return loginStep2Doc
-                } else if (status == 0) {
-                    throw RuntimeException("Timeout")
-                } else if (status < 0) {
-                    throw RuntimeException("Went to hell. Status " + status)
-                }
-                Thread.sleep(5000)
-            } while (Duration.between(started, clock.instant()) < POLL_TIMEOUT)
-            throw RuntimeException("Timeout")
-        } catch (e: IOException) {
-            throw UncheckedIOException(e)
-        } catch (e: InterruptedException) {
-            throw RuntimeException(e)
+        if (PATTERN.find(loginStep2Doc.html()) != null) {
+            throw IOException(getError(loginStep2Doc))
         }
+
+        val req = Request.Builder().url("https://internetbank.swedbank.se/idp/portal/identifieringidp/busresponsecheck/main-dapPortalWindowId")
+                .get()
+                .build()
+        val started = System.currentTimeMillis()
+        do {
+            val doc = jsoup(req)
+            val swedbankHtml = doc.select("div").text()
+            val data = LinkedHashMap<String, String>()
+            for (matcher in SWEDBANK_HTML_DECODER.findAll(swedbankHtml)) {
+                if (matcher.groupValues[1] != matcher.groupValues[3]) {
+                    throw IOException("Weird swedbankHtml: " + swedbankHtml)
+                }
+                data.put(matcher.groupValues[1], matcher.groupValues[2])
+            }
+            val status = Integer.parseInt(data["responsechecker.status"])
+            if (status == 1) {
+                // Logged in. Done
+                return loginStep2Doc
+            } else if (status == 0) {
+                throw RuntimeException("Timeout")
+            } else if (status < 0) {
+                throw RuntimeException("Went to hell. Status " + status)
+            }
+            Thread.sleep(5000)
+        } while (System.currentTimeMillis() - started < POLL_TIMEOUT)
+        throw RuntimeException("Timeout")
     }
 
     @SuppressWarnings("unused")
@@ -178,7 +167,9 @@ class ECardClient private constructor(private val loginPersonNumber: String) {
         elements.put("auth:kundnummer", loginPersonNumber)
         elements.remove("auth:avbryt_knapp")
         val formBody = FormBody.Builder()
-        elements.forEach({ t, u -> formBody.add(t, u) })
+        for ((key, value) in elements) {
+            formBody.add(key, value)
+        }
         val req = Request.Builder().url(authForm.attr("abs:action"))
                 .post(formBody.build())
                 .build()
@@ -196,7 +187,9 @@ class ECardClient private constructor(private val loginPersonNumber: String) {
         elements.remove("form:avbryt_knapp")
         elements.remove("form:timeout_knapp")
         val formBody = FormBody.Builder()
-        elements.forEach({ t, u -> formBody.add(t, u) })
+        for ((key, value) in elements) {
+            formBody.add(key, value)
+        }
 
         val req = Request.Builder().url(form.attr("abs:action"))
                 .post(formBody.build())
@@ -262,7 +255,10 @@ class ECardClient private constructor(private val loginPersonNumber: String) {
             thinClientBody.add("Version", "FLEXWEBCARD-SWEDBANK_2_4_44_0")
             thinClientBody.add("MsgNo", "" + msgNo++)
         }
-        map.forEach({ k, v -> thinClientBody.add(k, v.toString()) })
+        for ((key, value) in map) {
+            thinClientBody.add(key, value as String?)
+        }
+
         thinClientBody.add("Locale", "sv")
         thinClientBody.add("IssuerId", "1")
 
@@ -314,17 +310,13 @@ class ECardClient private constructor(private val loginPersonNumber: String) {
     }
 
     private fun jsoup(request: Request): Document {
-        try {
-            loggingInterceptor.level = debugLevel
-            val response = okhttpClient.newCall(request).execute()
-            val string = response.body()?.string()
-            if (!response.isSuccessful) {
-                throw IOException("Failed with " + response.code() + " and " + string)
-            }
-            return Jsoup.parse(string, response.request().url().toString())
-        } catch (e: IOException) {
-            throw UncheckedIOException(e)
+        loggingInterceptor.level = debugLevel
+        val response = okhttpClient.newCall(request).execute()
+        val string = response.body()?.string()
+        if (!response.isSuccessful) {
+            throw IOException("Failed with " + response.code() + " and " + string)
         }
+        return Jsoup.parse(string, response.request().url().toString())
     }
 
     @Suppress("unused")
