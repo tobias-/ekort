@@ -88,7 +88,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val PERSON_NUMBER_REGEX = Regex("(19|20)?([0-9]{6})-?([0-9]{2})")
+        private val PERSON_NUMBER_REGEX = Regex("(19|20)?([0-9]{6})-?([0-9]{4})")
     }
 
     private fun isPersonNumberValid(personNumber: String): Boolean {
