@@ -20,7 +20,7 @@ class ECardAPI private constructor(private val okhttpClient: OkHttpClient,
     companion object {
         private fun queryToHashMap(httpUrl: HttpUrl): LinkedHashMap<String, String> {
             val result = LinkedHashMap<String, String>()
-            for (i in 0..httpUrl.querySize()) {
+            for (i in 0..httpUrl.querySize() - 1) {
                 result.put(httpUrl.queryParameterName(i), httpUrl.queryParameterValue(i))
             }
             return result
