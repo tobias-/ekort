@@ -4,7 +4,6 @@ plugins {
     // only one of the following
     id 'org.ajoberstar.release-opinion' version '1.7.2'
     id 'org.ajoberstar.release-base' version '1.7.2'
-
 }
 
 version = "1.0.0-${grgit.head().abbreviatedId}"
@@ -26,9 +25,6 @@ allprojects {
     }
 }
 
-
 task wrapper(type: Wrapper) {
     gradleVersion = '4.1-milestone-1'
 }
-
-
