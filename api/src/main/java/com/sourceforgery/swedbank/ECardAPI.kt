@@ -69,7 +69,7 @@ class ECardAPI private constructor(private val okhttpClient: OkHttpClient,
             thinClientBody.add("MsgNo", "" + msgNo++)
         }
         for ((key, value) in map) {
-            thinClientBody.add(key, value as String?)
+            thinClientBody.add(key, value.toString())
         }
 
         thinClientBody.add("Locale", "sv")
