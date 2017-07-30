@@ -204,7 +204,7 @@ class LoginActivity : AppCompatActivity() {
                 val builder = AlertDialog.Builder(this@LoginActivity)
                 builder.setTitle(getString(R.string.pick_issuer))
                 builder.setCancelable(false)
-                builder.setItems(accounts, DialogInterface.OnClickListener { dialog, which ->
+                builder.setItems(accounts, { dialog, which ->
                     showProgress(false)
                     AccountSelectTask().execute(success[which])
                 })
@@ -248,7 +248,5 @@ class LoginActivity : AppCompatActivity() {
                 this@LoginActivity.personNumber.requestFocus()
             }
         }
-
-
     }
 }
