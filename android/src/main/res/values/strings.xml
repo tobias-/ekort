@@ -13,4 +13,23 @@
     <string name="error_field_required">This field is required</string>
     <string name="prompt_person_number">Person number</string>
     <string name="error_invalid_person_number">Invalid person number</string>
+
+
+    <string name="login_starting">Login starting</string>
+    <string name="login_NOT_STARTED">NOT_STARTED</string>
+    <string name="login_INIT_EKORT_COMPLETE">INIT_EKORT_COMPLETE</string>
+    <string name="login_STARTED">STARTED</string>
+    <string name="login_PORTAL_INIT_COMPLETE">PORTAL_INIT_COMPLETE</string>
+    <string name="login_LOGIN_1_COMPLETE">LOGIN_1_COMPLETE</string>
+    <string name="login_LOGIN_2_COMPLETE">LOGIN_2_COMPLETE</string>
+    <string name="login_ERROR">ERROR</string>
+    <string name="login_STARTED_POLLING">STARTED_POLLING</string>
+    <string name="login_POLL_COMPLETE">POLL_COMPLETE</string>
+    <string name="login_PRE_CLIENT_COMPLETE">PRE_CLIENT_COMPLETE</string>
+    <string name="login_LOGIN_3_COMPLETE">LOGIN_3_COMPLETE</string>
+    <string name="login_SELECT_ISSUER_STARTED">SELECT_ISSUER_STARTED</string>
+    <string name="login_SELECT_ISSUER_COMPLETE">SELECT_ISSUER_COMPLETE</string>
+    <string name="pick_issuer">Pick issuer/Account</string>
+
+
 </resources>
