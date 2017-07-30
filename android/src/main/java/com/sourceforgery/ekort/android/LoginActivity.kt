@@ -187,12 +187,15 @@ class LoginActivity : AppCompatActivity() {
         }
 
         private fun openBankIdApp() {
+
             val intent = Intent()
             intent.`package` = "com.bankid.bus"
             intent.action = Intent.ACTION_VIEW
             intent.type = "bankid"
             intent.data = Uri.parse("bankid://www.bankid.com?redirect=null")
-            startActivityForResult(intent, 0)
+            if (packageManager.queryIntentActivities(intent, 0).isNotEmpty()) {
+                startActivityForResult(intent, 0)
+            }
         }
 
         override fun onPostExecute(success: List<ECardClient.Account>?) {
@@ -204,8 +207,7 @@ class LoginActivity : AppCompatActivity() {
                 builder.setTitle(getString(R.string.pick_issuer))
                 builder.setCancelable(false)
                 builder.setItems(accounts, { dialog, which ->
-                    showProgress(false)
-                    AccountSelectTask().execute(success[which])
+                    AccountSelectTask(success[which]).execute()
                 })
                 builder.show()
             } else {
@@ -223,23 +225,24 @@ class LoginActivity : AppCompatActivity() {
     }
 
     @SuppressLint("StaticFieldLeak")
-    inner class AccountSelectTask internal constructor() : AsyncTask<ECardClient.Account, Void, ECardAPI?>() {
+    inner class AccountSelectTask internal constructor(private val arg: ECardClient.Account) : AsyncTask<Void, Void, ECardAPIImpl?>() {
         private var error: String? = null
 
-        override fun doInBackground(vararg arg: ECardClient.Account?): ECardAPI? {
+        override fun doInBackground(vararg ignoredArgs: Void?): ECardAPIImpl? {
             try {
-                return arg[0]!!.selectIssuer()
+                return arg.selectIssuer()
             } catch (e: Exception) {
                 this.error = e.message
                 return null
             }
         }
 
-        override fun onPostExecute(success: ECardAPI?) {
+        override fun onPostExecute(success: ECardAPIImpl?) {
             if (success != null) {
                 val intent = Intent(this@LoginActivity, EkortActivity::class.java)
-                intent.putExtra("webServletUrl", success.webServletUrl.toString())
-                intent.putExtra("cookies", success.serializeCookies())
+                intent.putExtra("sessionState", success.serializeState())
+                intent.putExtra("bankName", arg.bankName)
+                intent.putExtra("birthday", arg.personNumber.substring(0, 6))
                 startActivity(intent)
                 finish()
             } else {

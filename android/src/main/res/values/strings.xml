@@ -30,6 +30,20 @@
     <string name="login_SELECT_ISSUER_STARTED">SELECT_ISSUER_STARTED</string>
     <string name="login_SELECT_ISSUER_COMPLETE">SELECT_ISSUER_COMPLETE</string>
     <string name="pick_issuer">Pick issuer/Account</string>
-
-
+    <string name="entering_mock_mode">No intent with the right stuff found. Going into mock mode</string>
+    <string name="logged_in_as">Logged in as</string>
+    <string name="create_card_title">Create</string>
+    <string name="menu_item_create_card">Create card</string>
+    <string name="menu_item_active_cards">Active Cards</string>
+    <string name="menu_item_past_transactions">Past Transactions</string>
+    <string name="past_transactions">Past Transactions</string>
+    <string name="transaction_date_list_header">Date</string>
+    <string name="merchant_list_header">Merchant</string>
+    <string name="amount_list_header">Amount</string>
+    <string name="transaction_limit_list_header">Limit</string>
+    <string name="issue_date_list_header">Issue Date</string>
+    <string name="maximum_amount_per_transaction">Maximum amount per transaction</string>
+    <string name="maximum_total_amount_cumulative">Maximum total amount (cumulative)</string>
+    <string name="months_to_be_valid_for">Months to be valid for</string>
+    <string name="create_ecard">Create ECard</string>
 </resources>
