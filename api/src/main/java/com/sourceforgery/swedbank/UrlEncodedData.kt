@@ -1,11 +1,9 @@
 package com.sourceforgery.swedbank
 
+import org.joda.time.LocalDate
+import org.joda.time.format.DateTimeFormatterBuilder
 import java.math.BigDecimal
-import java.time.LocalDate
-import java.time.format.DateTimeFormatterBuilder
-import java.time.format.SignStyle
-import java.time.temporal.ChronoField.*
-import java.util.*
+import java.util.Currency
 
 open class UrlEncodedData internal constructor(private val index: Int, private val data: Map<String, String>) {
 
@@ -43,12 +41,13 @@ open class UrlEncodedData internal constructor(private val index: Int, private v
     }
 
     companion object {
-        private val LOCAL_DATE = DateTimeFormatterBuilder().appendValue(DAY_OF_MONTH, 2, 2, SignStyle.EXCEEDS_PAD)
+        private val LOCAL_DATE = DateTimeFormatterBuilder()
+                .appendDayOfMonth(2)
                 .appendLiteral('/')
-                .appendValue(MONTH_OF_YEAR, 2)
+                .appendMonthOfYear(2)
                 .appendLiteral('/')
-                .appendValue(YEAR, 2)
-                .toFormatter()
+                .appendYear(2, 2).toFormatter()
+
         private val FIND_AMOUNT = Regex("([0-9].*[0-9])")
 
         internal fun getTotal(map: Map<String, String>): Int {
