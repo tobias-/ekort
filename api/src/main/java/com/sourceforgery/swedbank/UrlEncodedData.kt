@@ -12,7 +12,7 @@ open class UrlEncodedData internal constructor(private val index: Int, private v
     }
 
     internal fun getString(fieldName: String): String {
-        return data[fieldName + index] ?:  throw IllegalArgumentException("No ${fieldName} in object data")
+        return data[fieldName + index] ?: throw IllegalArgumentException("No ${fieldName} in object data")
     }
 
     internal fun getBoolean(fieldName: String): Boolean {
