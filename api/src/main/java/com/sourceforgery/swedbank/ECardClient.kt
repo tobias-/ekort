@@ -10,12 +10,11 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.FormElement
 import java.io.IOException
-import java.util.function.Consumer
 
 var debugLevel = HttpLoggingInterceptor.Level.NONE
 var logger: HttpLoggingInterceptor.Logger = HttpLoggingInterceptor.Logger { message -> System.err.println(message) }
 
-enum class Status {
+enum class LoginStatus {
     NOT_STARTED,
     INIT_EKORT_COMPLETE,
     STARTED,
@@ -32,7 +31,7 @@ enum class Status {
 }
 
 interface StatusUpdateListener {
-    fun statusUpdated(status: Status);
+    fun statusUpdated(status: LoginStatus);
 }
 
 @SuppressWarnings("unused")
@@ -50,7 +49,7 @@ class ECardClient(private val loginPersonNumber: String) {
     private val cookieMonster = CookieMonster()
     private var loginResult: Document? = null
     var statusUpdatedListener: StatusUpdateListener? = null
-    private var status: Status = Status.NOT_STARTED
+    private var status: LoginStatus = LoginStatus.NOT_STARTED
         private set(value) {
             field = value
             statusUpdatedListener?.statusUpdated(value)
@@ -92,46 +91,46 @@ class ECardClient(private val loginPersonNumber: String) {
     @Suppress("unused")
     fun loginWithoutPoll() {
         try {
-            if (status != Status.NOT_STARTED) {
+            if (status != LoginStatus.NOT_STARTED) {
                 throw IllegalStateException("${this.javaClass.simpleName} cannot be restarted. Status was already ${status}")
             }
-            status = Status.STARTED
+            status = LoginStatus.STARTED
             val initEkort = this.initEkort()
-            status = Status.INIT_EKORT_COMPLETE
+            status = LoginStatus.INIT_EKORT_COMPLETE
             val portalInit = this.portalInit(initEkort)
-            status = Status.PORTAL_INIT_COMPLETE
+            status = LoginStatus.PORTAL_INIT_COMPLETE
             val loginStep1 = this.loginStep1(portalInit)
-            status = Status.LOGIN_1_COMPLETE
+            status = LoginStatus.LOGIN_1_COMPLETE
             val loginStep2 = this.loginStep2(loginStep1)
-            status = Status.LOGIN_2_COMPLETE
+            status = LoginStatus.LOGIN_2_COMPLETE
             val error = getError(loginStep2)
             if (error != "") {
                 throw IOException(error)
             }
             this.loginResult = loginStep2
         } catch (e: Exception) {
-            status = Status.ERROR
+            status = LoginStatus.ERROR
             throw e
         }
     }
 
     @Suppress("unused")
     fun pollAndGetAccounts(): List<Account> {
-        if (status != Status.LOGIN_2_COMPLETE) {
-            throw IllegalStateException("Expected ${Status.LOGIN_2_COMPLETE} but was ${status}")
+        if (status != LoginStatus.LOGIN_2_COMPLETE) {
+            throw IllegalStateException("Expected ${LoginStatus.LOGIN_2_COMPLETE} but was ${status}")
         }
         try {
-            status = Status.STARTED_POLLING
+            status = LoginStatus.STARTED_POLLING
             poll()
-            status = Status.POLL_COMPLETE
+            status = LoginStatus.POLL_COMPLETE
             val loginStep2Doc = this.loginResult ?: throw IllegalStateException("Must be run after loginWithoutPoll")
             val loginStep3 = loginStep3(loginStep2Doc)
-            status = Status.LOGIN_3_COMPLETE
+            status = LoginStatus.LOGIN_3_COMPLETE
             val preClient = preClient(loginStep3)
-            status = Status.PRE_CLIENT_COMPLETE
+            status = LoginStatus.PRE_CLIENT_COMPLETE
             return getAccounts(preClient)
         } catch (e: Exception) {
-            status = Status.ERROR
+            status = LoginStatus.ERROR
             throw e
         }
     }
@@ -259,11 +258,11 @@ class ECardClient(private val loginPersonNumber: String) {
     }
 
     private fun selectIssuer(url: HttpUrl): ECardAPI {
-        if (status != Status.PRE_CLIENT_COMPLETE) {
-            throw IllegalStateException("Cannot select issuer when status is ${status}, only when it's ${Status.PRE_CLIENT_COMPLETE}")
+        if (status != LoginStatus.PRE_CLIENT_COMPLETE) {
+            throw IllegalStateException("Cannot select issuer when status is ${status}, only when it's ${LoginStatus.PRE_CLIENT_COMPLETE}")
         }
         try {
-            status = Status.SELECT_ISSUER_STARTED
+            status = LoginStatus.SELECT_ISSUER_STARTED
             val selectCardReq = Request.Builder().url(url)
                     .header("Referer", "https://internetbank.swedbank.se/bviPrivat/privat?_new_flow_=false&ai_TDEApplName=TDEApplKort&ai_flow_id_=KONTROLLERA_EKORTSTATUS_PRECLIENT")
                     .header("Accept-Encoding", "gzip, deflate, br")
@@ -272,10 +271,10 @@ class ECardClient(private val loginPersonNumber: String) {
                     .build()
 
             val thinOpenerUrl = findWindowOpen(jsoup(selectCardReq))
-            status = Status.SELECT_ISSUER_COMPLETE
+            status = LoginStatus.SELECT_ISSUER_COMPLETE
             return ECardAPI.afterLogin(okhttpClient, cookieMonster, loggingInterceptor, thinOpenerUrl)
         } catch (e: Exception) {
-            status = Status.ERROR
+            status = LoginStatus.ERROR
             throw e
         }
     }
