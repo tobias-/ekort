@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
@@ -16,8 +17,6 @@ import android.widget.TextView
 import com.sourceforgery.swedbank.*
 import kotlinx.android.synthetic.main.activity_login.*
 import okhttp3.logging.HttpLoggingInterceptor
-import android.content.DialogInterface
-import android.support.v7.app.AlertDialog
 
 
 /**
