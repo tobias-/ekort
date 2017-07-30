@@ -169,7 +169,7 @@ class LoginActivity : AppCompatActivity() {
                 val eCardClient = ECardClient(personNumber)
                 eCardClient.statusUpdatedListener = object : StatusUpdateListener {
                     override fun statusUpdated(status: LoginStatus) {
-                        updateProgress(status)
+                        publishProgress(status)
                     }
                 }
                 eCardClient.loginWithoutPoll()
