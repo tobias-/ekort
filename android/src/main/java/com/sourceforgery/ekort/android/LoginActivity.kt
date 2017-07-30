@@ -197,7 +197,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         override fun onPostExecute(success: List<ECardClient.Account>?) {
-            showProgress(false)
 
             if (success != null) {
                 val accounts = success.map { "${it.personNumber} ${it.bankName} ${it.name}" }.toTypedArray()
@@ -206,10 +205,12 @@ class LoginActivity : AppCompatActivity() {
                 builder.setTitle(getString(R.string.pick_issuer))
                 builder.setCancelable(false)
                 builder.setItems(accounts, DialogInterface.OnClickListener { dialog, which ->
+                    showProgress(false)
                     AccountSelectTask().execute(success[which])
                 })
                 builder.show()
             } else {
+                showProgress(false)
                 this@LoginActivity.personNumber.error = error
                 this@LoginActivity.personNumber.requestFocus()
             }
