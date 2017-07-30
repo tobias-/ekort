@@ -1,5 +1,7 @@
 package com.sourceforgery.swedbank
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
@@ -15,6 +17,16 @@ class CookieMonster : CookieJar {
             cookieJar.remove(o)
             cookieJar.add(o)
         }
+    }
+
+    fun serializeAllCookies(): String {
+        return Gson().toJson(cookieJar)
+    }
+
+    fun deserializeAllCookies(json: String) {
+        val fromJson = Gson().fromJson<LinkedHashSet<CookieId>>(json, object : TypeToken<LinkedHashSet<CookieId>>() {}.type)
+        cookieJar.clear()
+        cookieJar.addAll(fromJson)
     }
 
     override fun loadForRequest(url: HttpUrl): List<Cookie> {
