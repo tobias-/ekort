@@ -3,6 +3,8 @@ package com.sourceforgery.ekort.android
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -11,7 +13,10 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import com.sourceforgery.swedbank.ECardAPI
 import com.sourceforgery.swedbank.ECardClient
+import com.sourceforgery.swedbank.debugLevel
+import com.sourceforgery.swedbank.logger
 import kotlinx.android.synthetic.main.activity_login.*
 import okhttp3.logging.HttpLoggingInterceptor
 
@@ -130,19 +135,23 @@ class LoginActivity : AppCompatActivity() {
      * the user.
      */
     @SuppressLint("StaticFieldLeak")
-    inner class UserLoginTask internal constructor(private val personNumber: String) : AsyncTask<Void, Void, List<ECardClient.Account>?>() {
+    inner class UserLoginTask internal constructor(private val personNumber: String) : AsyncTask<Void, Void, ECardAPI?>() {
 
         var error: String? = null
 
-        override fun doInBackground(vararg params: Void): List<ECardClient.Account>? {
+        override fun doInBackground(vararg params: Void): ECardAPI? {
             try {
-                ECardClient.debugLevel = HttpLoggingInterceptor.Level.BODY
-                ECardClient.logger = object : HttpLoggingInterceptor.Logger {
+                debugLevel = HttpLoggingInterceptor.Level.BODY
+                logger = object : HttpLoggingInterceptor.Logger {
                     override fun log(message: String?) {
                         Log.d("OkHttp3", message)
                     }
                 }
-                return ECardClient.login(personNumber)
+                val eCardClient = ECardClient(personNumber)
+                eCardClient.loginWithoutPoll()
+                openBankIdApp()
+                val pollAndGetAccounts = eCardClient.pollAndGetAccounts()
+                return pollAndGetAccounts[0].selectIssuer()
             } catch (e: InterruptedException) {
                 return null
             } catch (e: Exception) {
@@ -151,11 +160,24 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        override fun onPostExecute(success: List<ECardClient.Account>?) {
+        private fun openBankIdApp() {
+            val intent = Intent()
+            intent.`package` = "com.bankid.bus"
+            intent.action = Intent.ACTION_VIEW
+            intent.type = "bankid"
+            intent.data = Uri.parse("bankid://www.bankid.com?redirect=null")
+            startActivityForResult(intent, 0)
+        }
+
+        override fun onPostExecute(success: ECardAPI?) {
             mAuthTask = null
             showProgress(false)
 
             if (success != null) {
+                val intent = Intent(this@LoginActivity, EkortActivity::class.java)
+                intent.putExtra("webServletUrl", success.webServletUrl.toString())
+                intent.putExtra("cookies", success.serializeCookies())
+                startActivity(intent)
                 finish()
             } else {
                 this@LoginActivity.personNumber.error = error
@@ -168,4 +190,6 @@ class LoginActivity : AppCompatActivity() {
             showProgress(false)
         }
     }
+
+    inner class AccountSelectTask internal constructor()
 }
