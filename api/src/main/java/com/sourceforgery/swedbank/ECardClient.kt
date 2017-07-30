@@ -10,7 +10,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.FormElement
 import java.io.IOException
-import java.util.Collections
+import java.util.function.Consumer
 
 var debugLevel = HttpLoggingInterceptor.Level.NONE
 var logger: HttpLoggingInterceptor.Logger = HttpLoggingInterceptor.Logger { message -> System.err.println(message) }
@@ -31,6 +31,9 @@ enum class Status {
     SELECT_ISSUER_COMPLETE
 }
 
+interface StatusUpdateListener {
+    fun statusUpdated(status: Status);
+}
 
 @SuppressWarnings("unused")
 class ECardClient(private val loginPersonNumber: String) {
@@ -46,8 +49,13 @@ class ECardClient(private val loginPersonNumber: String) {
     private val loggingInterceptor: HttpLoggingInterceptor = HttpLoggingInterceptor({ logger.log(it) })
     private val cookieMonster = CookieMonster()
     private var loginResult: Document? = null
+    var statusUpdatedListener: StatusUpdateListener? = null
     private var status: Status = Status.NOT_STARTED
-        private set
+        private set(value) {
+            field = value
+            statusUpdatedListener?.statusUpdated(value)
+        }
+
 
     init {
         okhttpClient = OkHttpClient.Builder().cookieJar(cookieMonster)
