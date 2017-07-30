@@ -257,7 +257,7 @@ class ECardClient(private val loginPersonNumber: String) {
         return jsoup(req)
     }
 
-    private fun selectIssuer(url: HttpUrl): ECardAPI {
+    private fun selectIssuer(url: HttpUrl): ECardAPIImpl {
         if (status != LoginStatus.PRE_CLIENT_COMPLETE) {
             throw IllegalStateException("Cannot select issuer when status is ${status}, only when it's ${LoginStatus.PRE_CLIENT_COMPLETE}")
         }
@@ -302,7 +302,7 @@ class ECardClient(private val loginPersonNumber: String) {
 
     @Suppress("unused")
     inner class Account(val url: HttpUrl, val name: String, val personNumber: String, val bankName: String) {
-        fun selectIssuer(): ECardAPI {
+        fun selectIssuer(): ECardAPIImpl {
             return this@ECardClient.selectIssuer(url)
         }
     }

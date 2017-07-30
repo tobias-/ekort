@@ -6,14 +6,15 @@ class INTTest {
 
     @Throws(Exception::class)
     fun testLoginAndGetCards() {
-        ECardClient.debugLevel = Level.HEADERS
+        debugLevel = Level.HEADERS
 
-        val accounts = ECardClient.login(System.getenv("PERSONNR"))
+        val eCardClient = ECardClient(System.getenv("PERSONNR"))
+        eCardClient.loginWithoutPoll()
+        val accounts = eCardClient.pollAndGetAccounts()
         val api = accounts[1].selectIssuer()
-        val realCard = api.getCards()[0]
-        val activeECards = api.getActiveECards(realCard, 0)
+        val activeECards = api.getActiveECards(0)
         System.err.println(activeECards)
-        api.getPastTransactions(realCard, 0)
+        api.getPastTransactions(0)
         System.err.println(activeECards)
     }
 }
