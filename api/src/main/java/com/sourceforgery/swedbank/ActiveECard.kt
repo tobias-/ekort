@@ -5,7 +5,7 @@ data class ActiveECard internal constructor(val index: Int, val data: Map<String
     val merchantName = getString("MerchantName")
     val cvv = getString("avv")
     val cpnType = getString("CPNType")
-    val currency = getCurrency("Currency")
+    val currency = getInt("Currency")
     val expiry = getString("Expiry")
     val issueDate = getLocalDate("IssueDate")
     val numUsages = getInt("NumUsage")

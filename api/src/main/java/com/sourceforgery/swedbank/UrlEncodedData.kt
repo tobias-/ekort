@@ -20,15 +20,6 @@ open class UrlEncodedData internal constructor(private val index: Int, private v
         return "Y" == value || "true" == value
     }
 
-    internal fun getCurrency(fieldName: String): Currency {
-        val currencyCode = getInt(fieldName)
-        return Currency.getAvailableCurrencies()
-                .stream()
-                .filter { c -> c.numericCode == currencyCode }
-                .findFirst()
-                .orElseThrow { IllegalArgumentException("No currency with id $currencyCode is known") }
-    }
-
     fun getLocalDate(fieldName: String): LocalDate {
         return LocalDate.parse(getString(fieldName), LOCAL_DATE)
     }
