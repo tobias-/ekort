@@ -27,14 +27,10 @@ class PastTransactionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
     private val transactionDate = itemView.findViewById<TextView>(R.id.transaction_date)
     private val merchantName = itemView.findViewById<TextView>(R.id.merchant_name)
     private val transactionAmount = itemView.findViewById<TextView>(R.id.transaction_amount)
-    private val transactionLimit= itemView.findViewById<TextView>(R.id.transaction_limit)
-    private val issueDate = itemView.findViewById<TextView>(R.id.issue_date)
 
     fun setFrom(pastTransaction: PastTransaction) {
         transactionDate.text = pastTransaction.transactionDate
-        merchantName.text = pastTransaction.merchantCity
-        transactionAmount.text = pastTransaction.transactionAmount
-        transactionLimit.text = pastTransaction.transactionLimit
-        issueDate.text = pastTransaction.issueDate
+        merchantName.text = pastTransaction.merchantName
+        transactionAmount.text = pastTransaction.prettyTransactionAmount
     }
 }

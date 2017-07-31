@@ -4,4 +4,7 @@
     <string name="person_number">personNumber</string>
     <string name="debug_birthday">12345678</string>
     <string name="debug_bank">Swedbank</string>
+    <string name="debug_transaction_date">23/06/17</string>
+    <string name="debug_merchant_name">Foo.COM Inc</string>
+    <string name="debug_transaction_amount">JPY2.000,00</string>
 </resources>

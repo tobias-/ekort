@@ -1,62 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:weightSum="100">
+    android:layout_height="wrap_content">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/first_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/second_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.68" />
+
 
     <TextView
         android:id="@+id/transaction_date"
-        android:layout_width="0dp"
+        android:layout_width="70sp"
         android:layout_height="wrap_content"
-        android:layout_weight="20"
-        android:gravity="center" />
+        android:layout_alignParentStart="true"
+        android:layout_gravity="start"
+        android:layout_marginEnd="@dimen/text_padding"
+        android:layout_marginStart="@dimen/text_padding"
+        android:paddingBottom="@dimen/small_list_padding"
+        android:paddingTop="@dimen/small_list_padding"
+        android:text="@string/debug_transaction_date" />
 
     <View
+        android:id="@+id/left_line"
         android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark" />
-
-    <TextView
-        android:id="@+id/merchant_name"
-        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="20"
-        android:gravity="center" />
-
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
+        android:layout_alignBottom="@id/transaction_date"
+        android:layout_alignTop="@id/transaction_date"
+        android:layout_toEndOf="@id/transaction_date"
         android:background="@color/colorPrimaryDark" />
 
     <TextView
         android:id="@+id/transaction_amount"
-        android:layout_width="0dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_weight="20"
-        android:gravity="center" />
+        android:layout_alignBaseline="@id/transaction_date"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/text_padding"
+        android:layout_marginStart="@dimen/text_padding"
+        android:paddingBottom="@dimen/small_list_padding"
+        android:paddingTop="@dimen/small_list_padding"
+        android:text="@string/debug_transaction_amount" />
 
     <View
+        android:id="@+id/right_line"
         android:layout_width="1px"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/transaction_date"
+        android:layout_alignTop="@id/transaction_date"
+        android:layout_toStartOf="@id/transaction_amount"
         android:background="@color/colorPrimaryDark" />
 
     <TextView
-        android:id="@+id/transaction_limit"
-        android:layout_width="0dp"
+        android:id="@+id/merchant_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="20"
-        android:gravity="center" />
+        android:layout_alignBaseline="@id/transaction_date"
+        android:layout_marginEnd="@dimen/text_padding"
+        android:layout_marginStart="@dimen/text_padding"
+        android:layout_toEndOf="@id/transaction_date"
+        android:layout_toStartOf="@id/transaction_amount"
+        android:paddingBottom="@dimen/small_list_padding"
+        android:paddingTop="@dimen/small_list_padding"
+        android:text="@string/debug_merchant_name"
+        app:layout_constraintLeft_toRightOf="@+id/first_guideline" />
 
     <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark" />
+        android:layout_width="wrap_content"
+        android:layout_height="1px"
+        android:background="@color/colorPrimary"
+        android:layout_alignEnd="@id/transaction_amount"
+        android:layout_alignStart="@id/transaction_date"
+        android:layout_alignTop="@id/transaction_amount" />
 
-    <TextView
-        android:id="@+id/issue_date"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="20"
-        android:gravity="center" />
-</LinearLayout>
+
+</RelativeLayout>
