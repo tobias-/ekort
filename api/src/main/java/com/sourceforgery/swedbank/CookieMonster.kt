@@ -8,15 +8,18 @@ import okhttp3.HttpUrl
 
 class CookieMonster : CookieJar {
 
-    val cookieJar = LinkedHashSet<CookieId>()
-        get() = LinkedHashSet(field)
+    private val _cookieJar = LinkedHashSet<CookieId>()
+    val cookieJar: Set<CookieId>
+        get() {
+            return _cookieJar
+        }
 
 
     override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
         for (cookie in cookies) {
             val o = CookieId(cookie)
-            cookieJar.remove(o)
-            cookieJar.add(o)
+            _cookieJar.remove(o)
+            _cookieJar.add(o)
         }
     }
 
@@ -25,8 +28,8 @@ class CookieMonster : CookieJar {
     }
 
     fun deserializeAllCookies(cookies: Set<CookieId>) {
-        cookieJar.clear()
-        cookieJar.addAll(cookies)
+        _cookieJar.clear()
+        _cookieJar.addAll(cookies)
     }
 
     override fun loadForRequest(url: HttpUrl): List<Cookie> {
