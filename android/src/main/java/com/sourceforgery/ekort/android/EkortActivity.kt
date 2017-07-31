@@ -12,7 +12,6 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -24,7 +23,6 @@ import kotlinx.android.synthetic.main.activity_ekort.*
 import kotlinx.android.synthetic.main.app_bar_ekort.*
 import kotlinx.android.synthetic.main.content_ekort.*
 import kotlinx.android.synthetic.main.nav_header_ekort.*
-import kotlinx.android.synthetic.main.past_transaction_list_item.*
 
 class EkortActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -65,14 +63,12 @@ class EkortActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        Log.e("x", "Fjksdffssdkljf000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000dfjkdslkjfsdjlfsdjklfsd")
         super.onPostCreate(savedInstanceState, persistentState)
         textViewBank.text = intent.getCharSequenceExtra("bankName") ?: "Swedbank"
         textViewBirthday.text = intent.getCharSequenceExtra("birthday") ?: "450524"
     }
 
     private fun loadTransactions() {
-        Log.e("x","aaaaaaaaaaaaaaaFjksdffsdfjkdslkjfsdjlfsdjklfsd")
         showProgress(ekort_progress)
         LoadTransactions().execute()
     }
