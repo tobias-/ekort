@@ -19,7 +19,7 @@ class PastTransactionsAdapter(private val viewInflater: LayoutInflater, private 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): PastTransactionsViewHolder {
-        return PastTransactionsViewHolder(viewInflater.inflate(R.layout.past_transaction_list_item, null))
+        return PastTransactionsViewHolder(viewInflater.inflate(R.layout.past_transaction_list_item, parent, false))
     }
 }
 
