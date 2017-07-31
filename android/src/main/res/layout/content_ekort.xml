@@ -13,10 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/table"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <include
+        android:id="@+id/past_transactions"
+        layout="@layout/past_transaction_layout"
         android:visibility="gone" />
 
     <LinearLayout

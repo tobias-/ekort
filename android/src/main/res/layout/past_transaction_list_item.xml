@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -57,16 +56,14 @@
         android:layout_toStartOf="@id/transaction_amount"
         android:paddingBottom="@dimen/small_list_padding"
         android:paddingTop="@dimen/small_list_padding"
-        android:text="@string/debug_merchant_name"
-        app:layout_constraintLeft_toRightOf="@+id/first_guideline" />
+        android:text="@string/debug_merchant_name" />
 
     <View
         android:layout_width="wrap_content"
         android:layout_height="1px"
-        android:background="@color/colorPrimary"
         android:layout_alignEnd="@id/transaction_amount"
         android:layout_alignStart="@id/transaction_date"
-        android:layout_alignTop="@id/transaction_amount" />
-
+        android:layout_alignTop="@id/transaction_amount"
+        android:background="@color/colorPrimary" />
 
 </RelativeLayout>

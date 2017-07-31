@@ -9,7 +9,6 @@ import com.sourceforgery.swedbank.PastTransaction
 
 class PastTransactionsAdapter(private val viewInflater: LayoutInflater, private val pastTransactions: List<PastTransaction>) : RecyclerView.Adapter<PastTransactionsViewHolder>() {
 
-
     override fun onBindViewHolder(holder: PastTransactionsViewHolder, position: Int) {
         holder.setFrom(pastTransactions[position])
     }

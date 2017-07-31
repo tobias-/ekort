@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_ekort.*
 import kotlinx.android.synthetic.main.app_bar_ekort.*
 import kotlinx.android.synthetic.main.content_ekort.*
 import kotlinx.android.synthetic.main.nav_header_ekort.*
+import kotlinx.android.synthetic.main.past_transaction_layout.*
 
 class EkortActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -82,36 +83,24 @@ class EkortActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     }
 
     private fun showProgress(viewToBeShown: View) {
+
+        fixVisibility(create_ecard_form, viewToBeShown != create_ecard_form)
+        fixVisibility(past_transactions, viewToBeShown != past_transactions)
+        fixVisibility(ekort_progress, viewToBeShown != ekort_progress)
+    }
+
+    private fun fixVisibility(thisView: View, show: Boolean) {
         val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
-
-        create_ecard_form.visibility = if (viewToBeShown != create_ecard_form) View.GONE else View.VISIBLE
-        create_ecard_form.animate()
+        thisView.visibility = if (show) View.GONE else View.VISIBLE
+        thisView.animate()
                 .setDuration(shortAnimTime)
-                .alpha((if (viewToBeShown != create_ecard_form) 0 else 1).toFloat())
+                .alpha((if (show) 0 else 1).toFloat())
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
-                        create_ecard_form.visibility = if (viewToBeShown != create_ecard_form) View.GONE else View.VISIBLE
-                    }
-                })
-        table.visibility = if (viewToBeShown != table) View.GONE else View.VISIBLE
-        table.animate()
-                .setDuration(shortAnimTime)
-                .alpha((if (viewToBeShown != table) 0 else 1).toFloat())
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        table.visibility = if (viewToBeShown != table) View.GONE else View.VISIBLE
+                        thisView.visibility = if (show) View.GONE else View.VISIBLE
                     }
                 })
 
-        ekort_progress.visibility = if (viewToBeShown == ekort_progress) View.VISIBLE else View.GONE
-        ekort_progress.animate()
-                .setDuration(shortAnimTime)
-                .alpha((if (viewToBeShown == ekort_progress) 1 else 0).toFloat())
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        ekort_progress.visibility = if (viewToBeShown == ekort_progress) View.VISIBLE else View.GONE
-                    }
-                })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -153,10 +142,12 @@ class EkortActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
 
         override fun onPostExecute(result: List<PastTransaction>?) {
-            showProgress(table)
+            showProgress(past_transactions)
             if (result != null) {
+                past_transactions.visibility = View.VISIBLE
                 table.adapter = PastTransactionsAdapter(layoutInflater, result)
                 table.layoutManager = LinearLayoutManager(this@EkortActivity)
+                setTitle(R.string.past_transactions_title)
             } else {
                 throw RuntimeException("What happened here?")
             }

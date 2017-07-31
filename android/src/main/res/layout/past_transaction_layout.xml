@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/transaction_date"
+            android:layout_width="70sp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="start"
+            android:layout_marginEnd="@dimen/text_padding"
+            android:layout_marginStart="@dimen/text_padding"
+            android:paddingBottom="@dimen/small_list_padding"
+            android:paddingTop="@dimen/small_list_padding"
+            android:text="@string/transaction_date"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/left_line"
+            android:layout_width="1px"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/transaction_date"
+            android:layout_alignTop="@id/transaction_date"
+            android:layout_toEndOf="@id/transaction_date"
+            android:background="@color/colorPrimaryDark" />
+
+        <TextView
+            android:id="@+id/transaction_amount"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/transaction_date"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/text_padding"
+            android:layout_marginStart="@dimen/text_padding"
+            android:paddingBottom="@dimen/small_list_padding"
+            android:paddingTop="@dimen/small_list_padding"
+            android:text="@string/transaction_amount"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/right_line"
+            android:layout_width="1px"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/transaction_date"
+            android:layout_alignTop="@id/transaction_date"
+            android:layout_toStartOf="@id/transaction_amount"
+            android:background="@color/colorPrimaryDark" />
+
+        <TextView
+            android:id="@+id/merchant_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/transaction_date"
+            android:layout_marginEnd="@dimen/text_padding"
+            android:layout_marginStart="@dimen/text_padding"
+            android:layout_toEndOf="@id/transaction_date"
+            android:layout_toStartOf="@id/transaction_amount"
+            android:paddingBottom="@dimen/small_list_padding"
+            android:paddingTop="@dimen/small_list_padding"
+            android:text="@string/merchant_name"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/table"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

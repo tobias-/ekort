@@ -46,4 +46,8 @@
     <string name="maximum_total_amount_cumulative">Maximum total amount (cumulative)</string>
     <string name="months_to_be_valid_for">Months to be valid for</string>
     <string name="create_ecard">Create ECard</string>
+    <string name="transaction_date">Date</string>
+    <string name="merchant_name">Merchant Name</string>
+    <string name="transaction_amount">Amount</string>
+    <string name="past_transactions_title">Past Transactions</string>
 </resources>
