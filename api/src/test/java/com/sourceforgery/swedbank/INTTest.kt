@@ -1,12 +1,14 @@
 package com.sourceforgery.swedbank
 
 import okhttp3.logging.HttpLoggingInterceptor.Level
+import org.junit.Test
 
 class INTTest {
 
     @Throws(Exception::class)
+    @Test
     fun testLoginAndGetCards() {
-        debugLevel = Level.HEADERS
+        debugLevel = Level.BODY
 
         val eCardClient = ECardClient(System.getenv("PERSONNR"))
         eCardClient.loginWithoutPoll()
