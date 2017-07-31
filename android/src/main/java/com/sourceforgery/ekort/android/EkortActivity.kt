@@ -12,6 +12,7 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -60,18 +61,18 @@ class EkortActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
-    }
-
-    override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        System.err.println("Fjksdffssdkljf000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000dfjkdslkjfsdjlfsdjklfsd")
-        super.onPostCreate(savedInstanceState, persistentState)
-        textViewBank.text = intent.getCharSequenceExtra("bankName") ?: "Swedbank"
-        textViewBirthday.text = intent.getCharSequenceExtra("birthday") ?: "450524"
         loadTransactions()
     }
 
+    override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        Log.e("x", "Fjksdffssdkljf000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000dfjkdslkjfsdjlfsdjklfsd")
+        super.onPostCreate(savedInstanceState, persistentState)
+        textViewBank.text = intent.getCharSequenceExtra("bankName") ?: "Swedbank"
+        textViewBirthday.text = intent.getCharSequenceExtra("birthday") ?: "450524"
+    }
+
     private fun loadTransactions() {
-        System.err.println("aaaaaaaaaaaaaaaFjksdffsdfjkdslkjfsdjlfsdjklfsd")
+        Log.e("x","aaaaaaaaaaaaaaaFjksdffsdfjkdslkjfsdjlfsdjklfsd")
         showProgress(ekort_progress)
         LoadTransactions().execute()
     }
