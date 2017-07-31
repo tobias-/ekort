@@ -84,23 +84,25 @@ class EkortActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     private fun showProgress(viewToBeShown: View) {
 
-        fixVisibility(create_ecard_form, viewToBeShown != create_ecard_form)
-        fixVisibility(past_transactions, viewToBeShown != past_transactions)
-        fixVisibility(ekort_progress, viewToBeShown != ekort_progress)
+        fixVisibility(create_ecard_form, viewToBeShown == create_ecard_form, R.string.create_card_title)
+        fixVisibility(past_transactions, viewToBeShown == past_transactions, R.string.past_transactions_title)
+        fixVisibility(ekort_progress, viewToBeShown == ekort_progress, R.string.app_title)
     }
 
-    private fun fixVisibility(thisView: View, show: Boolean) {
+    private fun fixVisibility(thisView: View, show: Boolean, title: Int) {
         val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
-        thisView.visibility = if (show) View.GONE else View.VISIBLE
+        thisView.visibility = if (show) View.VISIBLE else View.GONE
         thisView.animate()
                 .setDuration(shortAnimTime)
-                .alpha((if (show) 0 else 1).toFloat())
+                .alpha((if (show) 1 else 0).toFloat())
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
-                        thisView.visibility = if (show) View.GONE else View.VISIBLE
+                        thisView.visibility = if (show) View.VISIBLE else View.GONE
                     }
                 })
-
+        if (show) {
+            setTitle(title)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -147,7 +149,6 @@ class EkortActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 past_transactions.visibility = View.VISIBLE
                 table.adapter = PastTransactionsAdapter(layoutInflater, result)
                 table.layoutManager = LinearLayoutManager(this@EkortActivity)
-                setTitle(R.string.past_transactions_title)
             } else {
                 throw RuntimeException("What happened here?")
             }

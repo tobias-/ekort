@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Swedbank Ekort</string>
+    <string name="app_title">Swedbank Ekort</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -32,7 +33,7 @@
     <string name="pick_issuer">Pick issuer/Account</string>
     <string name="entering_mock_mode">No intent with the right stuff found. Going into mock mode</string>
     <string name="logged_in_as">Logged in as</string>
-    <string name="create_card_title">Create</string>
+    <string name="create_card_title">Create Card</string>
     <string name="menu_item_create_card">Create card</string>
     <string name="menu_item_active_cards">Active Cards</string>
     <string name="menu_item_past_transactions">Past Transactions</string>
