@@ -15,3 +15,6 @@ gradlew.bat
 .classpath
 
 *.swp
+
+# Ignore mock resource
+api/src/main/resources/replies.json
