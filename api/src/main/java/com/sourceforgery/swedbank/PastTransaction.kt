@@ -21,7 +21,12 @@ data class PastTransaction constructor(val index: Int, val result: Map<String, S
     val transactionAmount = getString("TransactionAmount")
     val transactionLimit = getString("UTransactionLimit")
     val cumulativeLimit = getString("UCumulativeLimit")
-    val prettyTransactionAmount = transactionAmount.replace(REGEX, "$1$3 $2").replace('.', ' ').replace(',', '.').replace("kr", "SEK")
+    val prettyTransactionAmount = transactionAmount.replace(REGEX, "$1$3 $2")
+            .replace('.', ' ')
+            .replace(',', '.')
+            .replace("kr", "SEK")
+            .replace("$", "USD")
+            .replace("€", "EUR")
 
     companion object {
         val REGEX = Regex("([^0-9,.]*)([0-9.,]*)([^0-9,.]*)")
