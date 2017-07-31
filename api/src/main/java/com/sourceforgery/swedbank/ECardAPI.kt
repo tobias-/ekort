@@ -144,9 +144,10 @@ class ECardAPIImpl internal constructor(private val okhttpClient: OkHttpClient,
             thinClientBody.add("SessionId", sessionId)
             thinClientBody.add("Version", "FLEXWEBCARD-SWEDBANK_2_4_44_0")
             thinClientBody.add("MsgNo", "" + msgNo++)
-        } else {
-            thinClientBody.add("CardType", realCard!!.cardType.toString())
-            thinClientBody.add("VCardId", realCard!!.vCardId.toString())
+            if (realCard != null) {
+                thinClientBody.add("CardType", realCard!!.cardType.toString())
+                thinClientBody.add("VCardId", realCard!!.vCardId.toString())
+            }
         }
 
         for ((key, value) in request) {
