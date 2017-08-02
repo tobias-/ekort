@@ -72,26 +72,31 @@ class EkortActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         }
     }
 
-    private fun showProgress(viewToBeShown: View) {
+    private fun showScreen(viewToBeShown: View) {
 
-        fixVisibility(create_ecard_form, viewToBeShown == create_ecard_form, R.string.create_card_title)
-        fixVisibility(past_transactions, viewToBeShown == past_transactions, R.string.past_transactions_title)
-        fixVisibility(ekort_progress, viewToBeShown == ekort_progress, R.string.app_title)
+        fixVisibility(create_ecard_form, viewToBeShown, R.string.create_card_title)
+        fixVisibility(past_transactions, viewToBeShown, R.string.past_transactions_title)
+        fixVisibility(ekort_progress, viewToBeShown, R.string.app_title)
+        fixVisibility(active_ecards, viewToBeShown, R.string.active_ecards_title)
     }
 
-    private fun fixVisibility(thisView: View, show: Boolean, title: Int) {
-        val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
-        thisView.visibility = if (show) View.VISIBLE else View.GONE
-        thisView.animate()
-                .setDuration(shortAnimTime)
-                .alpha((if (show) 1 else 0).toFloat())
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        thisView.visibility = if (show) View.VISIBLE else View.GONE
-                    }
-                })
-        if (show) {
-            setTitle(title)
+    private fun fixVisibility(thisView: View, viewToBeShown: View, title: Int) {
+        val show = viewToBeShown == thisView
+        val alreadyShown = thisView.visibility == View.VISIBLE
+        if (alreadyShown != show) {
+            val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+            thisView.visibility = if (show) View.VISIBLE else View.GONE
+            thisView.animate()
+                    .setDuration(shortAnimTime)
+                    .alpha((if (show) 1 else 0).toFloat())
+                    .setListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            thisView.visibility = if (show) View.VISIBLE else View.GONE
+                        }
+                    })
+            if (show) {
+                setTitle(title)
+            }
         }
     }
 
