@@ -58,4 +58,5 @@
     <string name="limit_header">Limit</string>
     <string name="active_ecards_title">Active ECards</string>
     <string name="cc_copied_to_clipboard">Credit card number copied to clipboard</string>
+    <string name="golden_coin">Golden coin</string>
 </resources>
