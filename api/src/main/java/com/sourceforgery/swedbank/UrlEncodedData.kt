@@ -31,7 +31,19 @@ open class UrlEncodedData internal constructor(private val index: Int, private v
         return BigDecimal(number)
     }
 
+    fun prettyAmount(amount: String) =
+            amount.replace(REGEX, "$1$3 $2")
+                    .replace('.', ' ')
+                    .replace(',', '.')
+                    .replace("kr", "SEK")
+                    .replace("$", "USD")
+                    .replace("€", "EUR")
+
+    fun stripCurrency(amount: String) = amount.replace(REGEX, "$2")
+
     companion object {
+        private val REGEX = Regex("([^0-9,.]*)([0-9.,]*)([^0-9,.]*)")
+
         private val LOCAL_DATE = DateTimeFormatterBuilder()
                 .appendDayOfMonth(2)
                 .appendLiteral('/')
