@@ -51,4 +51,11 @@
     <string name="merchant_name">Merchant Name</string>
     <string name="transaction_amount">Amount</string>
     <string name="past_transactions_title">Past Transactions</string>
+    <string name="pan_header">PAN</string>
+    <string name="expiry_header">Expiry</string>
+    <string name="cvv_header">CVV</string>
+    <string name="open_amount_header">Left</string>
+    <string name="limit_header">Limit</string>
+    <string name="active_ecards_title">Active ECards</string>
+    <string name="cc_copied_to_clipboard">Credit card number copied to clipboard</string>
 </resources>
