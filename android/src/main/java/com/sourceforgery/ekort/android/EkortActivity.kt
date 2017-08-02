@@ -7,7 +7,6 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -16,12 +15,15 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import com.sourceforgery.swedbank.ActiveECard
 import com.sourceforgery.swedbank.ECardAPI
 import com.sourceforgery.swedbank.ECardAPIMock
 import com.sourceforgery.swedbank.PastTransaction
+import kotlinx.android.synthetic.main.active_cards_layout.*
 import kotlinx.android.synthetic.main.activity_ekort.*
 import kotlinx.android.synthetic.main.app_bar_ekort.*
 import kotlinx.android.synthetic.main.content_ekort.*
+import kotlinx.android.synthetic.main.create_ecard_layout.*
 import kotlinx.android.synthetic.main.nav_header_ekort.*
 import kotlinx.android.synthetic.main.past_transaction_layout.*
 
@@ -37,15 +39,9 @@ class EkortActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         val sessionState = intent.getStringExtra("sessionState")
         if (sessionState != null) {
             eCardAPI = ECardAPI.unpack(sessionState)
-
         } else {
             Toast.makeText(this, getString(R.string.entering_mock_mode), Toast.LENGTH_SHORT).show()
             eCardAPI = ECardAPIMock()
-        }
-
-        fab.setOnClickListener {
-            Snackbar.make(it, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
         }
 
         create_ecard.setOnClickListener {
