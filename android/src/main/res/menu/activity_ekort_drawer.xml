@@ -6,7 +6,6 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_past_transactions"
-            android:checked="true"
             android:icon="@drawable/ic_menu_past_transactions"
             android:title="@string/menu_item_past_transactions" />
         <item
@@ -18,6 +17,7 @@
             <menu>
                 <item
                     android:id="@+id/nav_create_card"
+                    android:checked="true"
                     android:icon="@drawable/ic_add_white"
                     android:checkable="true"
                     android:title="@string/menu_item_create_card" />
