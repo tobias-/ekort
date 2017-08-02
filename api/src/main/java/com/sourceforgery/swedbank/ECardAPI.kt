@@ -79,7 +79,7 @@ abstract class ECardAPI {
             val map = queryToHashMap(thinOpenerUrl)
             map.put("Request", "GetActiveCards")
             val webServletUrl = thinOpenerUrl.newBuilder().encodedPath("/servlet/WebServlet").query(null).build()
-            val api = ECardAPIImpl(okhttpClient, cookieMonster, loggingInterceptor, webServletUrl, null)
+            val api = ECardAPIImpl(okhttpClient, cookieMonster, loggingInterceptor, webServletUrl)
             val result = api.executeWebServlet(map)
             val realCards = Collections.unmodifiableList(RealCard.from(result))
             api.realCard = realCards[0]
@@ -102,13 +102,20 @@ abstract class ECardAPI {
                                         .header("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.104 Safari/537.36")
                                         .build())
                             }).build()
-            return ECardAPIImpl(okhttpClient, cookieMonster, loggingInterceptor, HttpUrl.parse(deserializedState.webServletUrl)!!, deserializedState.realCard)
+            return ECardAPIImpl(
+                    okhttpClient,
+                    cookieMonster,
+                    loggingInterceptor,
+                    HttpUrl.parse(deserializedState.webServletUrl)!!,
+                    deserializedState.realCard,
+                    deserializedState.sessionId
+            )
         }
     }
 
 }
 
-internal class SerializedState(val cookies: Set<CookieMonster.CookieId>, webServletUrl: HttpUrl, val realCard: RealCard) {
+internal class SerializedState(val cookies: Set<CookieMonster.CookieId>, webServletUrl: HttpUrl, val realCard: RealCard, val sessionId: String) {
     val webServletUrl = webServletUrl.toString()
 }
 
@@ -130,9 +137,8 @@ class ECardAPIImpl internal constructor(private val okhttpClient: OkHttpClient,
                                         private val cookieMonster: CookieMonster,
                                         private val loggingInterceptor: HttpLoggingInterceptor,
                                         val webServletUrl: HttpUrl,
-                                        var realCard: RealCard?) : ECardAPI() {
-
-    private var sessionId: String? = null
+                                        var realCard: RealCard? = null,
+                                        var sessionId: String? = null) : ECardAPI() {
     private var msgNo = 0
 
     @Synchronized
@@ -196,7 +202,8 @@ class ECardAPIImpl internal constructor(private val okhttpClient: OkHttpClient,
 
     override fun serializeState(): String {
         val localRealCard = realCard ?: throw IllegalStateException("No state to serialize")
-        return Gson().toJson(SerializedState(cookieMonster.cookieJar, webServletUrl, localRealCard))
+        val localSessionId = sessionId ?: throw IllegalStateException("No state to serialize")
+        return Gson().toJson(SerializedState(cookieMonster.cookieJar, webServletUrl, localRealCard, localSessionId))
     }
 
 
