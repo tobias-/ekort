@@ -30,6 +30,6 @@ class PastTransactionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
     fun setFrom(pastTransaction: PastTransaction) {
         transactionDate.text = pastTransaction.transactionDate
         merchantName.text = pastTransaction.merchantName
-        transactionAmount.text = pastTransaction.prettyTransactionAmount
+        transactionAmount.text = pastTransaction.prettyAmount(pastTransaction.transactionAmount)
     }
 }
