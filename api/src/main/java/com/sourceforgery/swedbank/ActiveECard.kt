@@ -3,22 +3,24 @@ package com.sourceforgery.swedbank
 data class ActiveECard internal constructor(val index: Int, val data: Map<String, String>) : UrlEncodedData(index, data) {
     val merchantId = getString("MerchantId")
     val merchantName = getString("MerchantName")
-    val cvv = getString("avv")
+    val cvv = getString("AVV")
     val cpnType = getString("CPNType")
     val currency = getInt("Currency")
     val expiry = getString("Expiry")
     val issueDate = getLocalDate("IssueDate")
+    // Not useful
     val numUsages = getInt("NumUsage")
     val creditCardNumber = getString("PAN")
     val validFrom = getLocalDate("ValidFrom")
     val validTo = getLocalDate("ValidTo")
-    val transactionLimit = getBigDecimal("UTransactionLimit")
-    val cumulativeLimit = getBigDecimal("UCumulativeLimit")
-    val authAmount = getBigDecimal("AuthAmount")
-    val openToBuy = getBigDecimal("UOpenToBuy")
+    val transactionLimit = getString("UTransactionLimit")
+    val cumulativeLimit = getString("UCumulativeLimit")
+    val authAmount = stripCurrency(getString("AuthAmount"))
+    val openToBuy = getString("UOpenToBuy")
 
     val isUnused: Boolean
-        get() = "-" == merchantId && numUsages == 0
+        get() = "-" == merchantId && numUsages == 0 && transactionLimit == openToBuy
+
 
     companion object {
 
