@@ -123,6 +123,7 @@ class ECardAPIMock : ECardAPI() {
     override fun executeWebServlet(request: Map<String, Any>): Map<String, String> {
         ECardAPIMock::class.java.getResourceAsStream("/replies.json").use {
             val fromJson = Gson().fromJson<Map<String, String>>(InputStreamReader(it, "UTF-8"), object : TypeToken<Map<String, String>>() {}.type)
+            Thread.sleep(2000)
             return ECardAPI.queryToHashMap(fromJson[request["Request"] as String] as String)
         }
     }
@@ -167,11 +168,6 @@ class ECardAPIImpl internal constructor(private val okhttpClient: OkHttpClient,
                 .post(thinClientBody.build())
                 .build()
 
-        try {
-            Thread.sleep(2000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
         val execute = okhttpClient.newCall(thinClientReq).execute()
 
         val body = execute.body() ?: throw IOException("No body!?")
