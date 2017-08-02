@@ -48,7 +48,7 @@ class EkortActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             val transactionLimit = max_transaction_amount.text.toString().toInt()
             val cumulativeLimit = max_total_amount.text.toString().toInt()
             val validForMonths = months_validity.text.toString().toInt()
-            eCardAPI!!.createCard(transactionLimit, cumulativeLimit, validForMonths)
+            CreateECard(transactionLimit, cumulativeLimit, validForMonths).execute()
         }
 
         val toggle = ActionBarDrawerToggle(
@@ -151,4 +151,29 @@ class EkortActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         }
     }
 
+
+
+    @SuppressLint("StaticFieldLeak")
+    inner class CreateECard(val transactionLimit: Int, val cumulativeLimit: Int, val validForMonths: Int) : AsyncTask<Void, Void, List<ActiveECard>?>() {
+
+        override fun onPreExecute() {
+            showScreen(ekort_progress)
+        }
+
+        override fun doInBackground(vararg p0: Void?): List<ActiveECard> {
+            eCardAPI!!.createCard(transactionLimit, cumulativeLimit, validForMonths)
+            return eCardAPI!!.getActiveECards(0)
+        }
+
+
+        override fun onPostExecute(result: List<ActiveECard>?) {
+            if (result != null) {
+                showScreen(active_ecards)
+                active_cards_table.adapter = ActiveECardsAdapter(result, this@EkortActivity)
+                active_cards_table.layoutManager = LinearLayoutManager(this@EkortActivity)
+            } else {
+                throw RuntimeException("What happened here?")
+            }
+        }
+    }
 }
