@@ -11,75 +11,20 @@
     <ProgressBar
         android:id="@+id/ekort_progress"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
     <include
         android:id="@+id/past_transactions"
         layout="@layout/past_transaction_layout"
         android:visibility="gone" />
 
-    <LinearLayout
+    <include
+        android:id="@+id/active_ecards"
+        layout="@layout/active_cards_layout"
+        android:visibility="gone" />
+
+    <include
         android:id="@+id/create_ecard_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/max_transaction_amount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/maximum_amount_per_transaction"
-                android:inputType="number"
-                android:maxLines="1"
-                android:singleLine="true" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/max_total_amount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/maximum_total_amount_cumulative"
-                android:inputType="number"
-                android:maxLines="1"
-                android:singleLine="true" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/months_validity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/months_to_be_valid_for"
-                android:inputType="number"
-                android:maxLines="1"
-                android:singleLine="true" />
-
-        </android.support.design.widget.TextInputLayout>
-
-
-        <Button
-            android:id="@+id/create_ecard"
-            style="?android:textAppearanceSmall"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/create_ecard"
-            android:textStyle="bold" />
-    </LinearLayout>
-
+        layout="@layout/create_ecard_layout" />
 </android.support.constraint.ConstraintLayout>
