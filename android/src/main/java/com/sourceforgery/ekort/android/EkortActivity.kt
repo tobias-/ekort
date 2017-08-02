@@ -46,7 +46,7 @@ class EkortActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
         create_ecard.setOnClickListener {
             val transactionLimit = max_transaction_amount.text.toString().toInt()
-            val cumulativeLimit = max_total_amount.toString().toInt()
+            val cumulativeLimit = max_total_amount.text.toString().toInt()
             val validForMonths = months_validity.text.toString().toInt()
             eCardAPI!!.createCard(transactionLimit, cumulativeLimit, validForMonths)
         }
