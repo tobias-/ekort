@@ -56,18 +56,12 @@ class EkortActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
-        loadTransactions()
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onPostCreate(savedInstanceState, persistentState)
         textViewBank.text = intent.getCharSequenceExtra("bankName") ?: "Swedbank"
         textViewBirthday.text = intent.getCharSequenceExtra("birthday") ?: "450524"
-    }
-
-    private fun loadTransactions() {
-        showProgress(ekort_progress)
-        LoadTransactions().execute()
     }
 
     override fun onBackPressed() {
