@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/pan"
+        style="@android:style/Widget.Button.Small"
+        android:layout_width="50sp"
+        android:layout_height="30sp"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="start"
+        android:layout_marginEnd="@dimen/text_padding"
+        android:layout_marginStart="@dimen/text_padding"
+        android:paddingBottom="@dimen/small_list_padding"
+        android:paddingTop="@dimen/small_list_padding"
+        android:text="@string/debug_pan"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/first_line"
+        android:layout_width="1px"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/pan"
+        android:layout_alignTop="@id/pan"
+        android:layout_toEndOf="@id/pan"
+        android:background="@color/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/expiry_mmyy"
+        android:layout_width="40sp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/pan"
+        android:layout_marginEnd="@dimen/text_padding"
+        android:layout_marginStart="@dimen/text_padding"
+        android:layout_toEndOf="@id/first_line"
+        android:paddingBottom="@dimen/small_list_padding"
+        android:paddingTop="@dimen/small_list_padding"
+        android:text="@string/debug_yy_mm"
+        android:textStyle="bold" />
+
+
+    <View
+        android:id="@+id/second_line"
+        android:layout_width="1px"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/first_line"
+        android:layout_alignTop="@id/first_line"
+        android:layout_toEndOf="@id/expiry_mmyy"
+        android:background="@color/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/cvv"
+        android:layout_width="30sp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/pan"
+        android:layout_marginEnd="@dimen/text_padding"
+        android:layout_marginStart="@dimen/text_padding"
+        android:layout_toEndOf="@id/second_line"
+        android:paddingBottom="@dimen/small_list_padding"
+        android:paddingTop="@dimen/small_list_padding"
+        android:text="@string/debug_cvv"
+        android:textStyle="bold" />
+
+
+    <View
+        android:id="@+id/third_line"
+        android:layout_width="1px"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/first_line"
+        android:layout_alignTop="@id/first_line"
+        android:layout_toEndOf="@id/cvv"
+        android:background="@color/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/cumulative_amount"
+        android:layout_width="70sp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/pan"
+        android:layout_marginEnd="@dimen/text_padding"
+        android:layout_marginStart="@dimen/text_padding"
+        android:layout_toEndOf="@id/third_line"
+        android:paddingBottom="@dimen/small_list_padding"
+        android:paddingTop="@dimen/small_list_padding"
+        android:text="@string/debug_amount"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/fourth_line"
+        android:layout_width="1px"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/first_line"
+        android:layout_alignTop="@id/first_line"
+        android:layout_toEndOf="@id/cumulative_amount"
+        android:background="@color/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/open_amount"
+        android:layout_width="70sp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/pan"
+        android:layout_marginEnd="@dimen/text_padding"
+        android:layout_marginStart="@dimen/text_padding"
+        android:layout_toEndOf="@id/fourth_line"
+        android:paddingBottom="@dimen/small_list_padding"
+        android:paddingTop="@dimen/small_list_padding"
+        android:text="@string/debug_amount"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>
